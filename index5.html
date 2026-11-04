@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTest Pro — Bilim va Konikmalarni Sinash Platformasi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-blue: #38bdf8;
+            --accent-purple: #818cf8;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(129, 140, 248, 0.12) 0px, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 750px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 20px -10px rgba(56, 189, 248, 0.3);
+        }
+
+        .category-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .category-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .category-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-btn.correct {
+            background: rgba(52, 211, 153, 0.15) !important;
+            border-color: var(--accent-green) !important;
+            color: var(--accent-green);
+        }
+
+        .option-btn.wrong {
+            background: rgba(248, 113, 113, 0.15) !important;
+            border-color: var(--accent-red) !important;
+            color: var(--accent-red);
+        }
+
+        .result-box {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 auto 24px;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            margin-top: 24px;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Category Screen -->
+    <div id="screen-categories">
+        <header>
+            <span class="badge">N1 Test Platformasi</span>
+            <h1>Yo'nalishni tanlang</h1>
+            <p class="subtitle">O'z bilimingizni sinab ko'ring va natijani darhol oling</p>
+        </header>
+
+        <div class="category-grid">
+            <div class="category-card" onclick="startQuiz('it')">
+                <div class="category-icon">💻</div>
+                <div class="category-title">IT & Dasturlash</div>
+                <div class="category-desc">Web, Algoritmlar va AI</div>
+            </div>
+            <div class="category-card" onclick="startQuiz('english')">
+                <div class="category-icon">🌐</div>
+                <div class="category-title">Ingliz Tili</div>
+                <div class="category-desc">Grammatika va So'z boyligi</div>
+            </div>
+            <div class="category-card" onclick="startQuiz('business')">
+                <div class="category-icon">📊</div>
+                <div class="category-title">Biznes va Moliya</div>
+                <div class="category-desc">Tadbirkorlik va Menejment</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="screen-quiz" class="hidden">
+        <div class="quiz-header">
+            <span id="quiz-category-title" class="badge">Kategoriya</span>
+            <span id="question-counter" style="color: var(--text-muted); font-size: 14px;">1 / 5</span>
+        </div>
+
+        <div class="progress-bar-bg">
+            <div id="progress-bar" class="progress-bar-fill"></div>
+        </div>
+
+        <div id="question-text" class="question-text">Savol yuklanmoqda...</div>
+
+        <div id="options-container" class="options-container"></div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="screen-result" class="hidden">
+        <div class="result-box">
+            <div id="score-display" class="score-circle">0/0</div>
+            <h2 id="result-title">Ajoyib natija!</h2>
+            <p id="result-desc" class="subtitle" style="margin-top: 8px;">Siz barcha savollarga javob berdingiz.</p>
+            <button class="btn-primary" onclick="showCategories()">Bosh sahifaga qaytish</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const quizData = {
+        it: {
+            title: "IT & Dasturlash",
+            questions: [
+                { q: "HTML nimaning qisqartmasi?", options: ["HyperText Markup Language", "HighTech Machine Language", "Hyperlink Text Mode Logic"], answer: 0 },
+                { q: "CSS asosan qanday maqsadlar uchun ishlatiladi?", options: ["Ma'lumotlar bazasini boshqarish", "Sayt dizayni va ko'rinishini berish", "Server algoritmlarini yozish"], answer: 1 },
+                { q: "API so'zining ma'nosi nima?", options: ["Application Programming Interface", "Advanced Protocol Integration", "Automated Program Instruction"], answer: 0 },
+                { q: "JavaScript-da o'zgaruvchi e'lon qilish uchun qaysi kalit so'z ishlatilmaydi?", options: ["let", "const", "make"], answer: 2 },
+                { q: "Git bu nima?", options: ["Dasturlash tili", "Versiyalarni boshqarish tizimi", "Operatsion tizim"], answer: 1 },
+                { q: "SQL nimaga mo'ljallangan?", options: ["Ma'lumotlar bazasi bilan ishlashga", "Mobil ilovalar tuzishga", "Sayt CSS bezaklariga"], answer: 0 },
+                { q: "HTTP protokolidagi 'S' harfi (HTTPS) nimani anglatadi?", options: ["Speed", "Secure", "System"], answer: 1 },
+                { q: "Python dasturlash tilida ro'yxat (list) qanday qavs bilan ochiladi?", options: ["( )", "[ ]", "{ }"], answer: 1 },
+                { q: "Frontend dasturlashning asosiy uchligi qaysilar?", options: ["HTML, CSS, JS", "Python, SQL, C++", "Node.js, Docker, Linux"], answer: 0 },
+                { q: "JSON nima?", options: ["Ma'lumotlar almashish formati", "Dasturlash muhiti", "Grafik muharrir"], answer: 0 }
+            ]
+        },
+        english: {
+            title: "Ingliz Tili",
+            questions: [
+                { q: "Choose the correct form: She ___ to school every day.", options: ["go", "goes", "going"], answer: 1 },
+                { q: "What is the synonym of 'Important'?", options: ["Trivial", "Crucial", "Minor"], answer: 1 },
+                { q: "Fill in the blank: If I ___ rich, I would travel the world.", options: ["were", "am", "will be"], answer: 0 },
+                { q: "What is the past tense of 'Catch'?", options: ["Catched", "Caught", "Cotch"], answer: 1 },
+                { q: "Choose the antonym of 'Ancient':", options: ["Old", "Modern", "Historic"], answer: 1 },
+                { q: "Select the correct plural form of 'Child':", options: ["Childs", "Children", "Childrens"], answer: 1 },
+                { q: "Which preposition is correct? 'Interested ___ music'", options: ["on", "at", "in"], answer: 2 },
+                { q: "Find the odd word out:", options: ["Apple", "Carrot", "Banana"], answer: 1 },
+                { q: "What does 'Break a leg' mean?", options: ["Omad tilayman", "Oyoqni sindirish", "Shoshilish"], answer: 0 },
+                { q: "Complete the sentence: He has been working here ___ 2018.", options: ["for", "since", "from"], answer: 1 }
+            ]
+        },
+        business: {
+            title: "Biznes va Moliya",
+            questions: [
+                { q: "ROI (Return on Investment) nimani anglatadi?", options: ["Investitsiya daromadliligi", "Kompaniya qarzi", "Yillik soliq miqdori"], answer: 0 },
+                { q: "Biznesda 'B2B' modeli nimani anglatadi?", options: ["Business to Bank", "Business to Business", "Buyer to Buyer"], answer: 1 },
+                { q: "Startap loyihalarda MVP nima?", options: ["Eng yaxshi xodim", "Minimal yaroqli mahsulot", "Bosh boshqaruvchi"], answer: 1 },
+                { q: "Inflyatsiya nima?", options: ["Pulning qadrsizlanishi", "Kompaniya foydasining oshishi", "Eksport hajmining ko'payishi"], answer: 0 },
+                { q: "SWOT tahlilida 'O' harfi nimani anglatadi?", options: ["Opportunities (Imkoniyatlar)", "Obstacles (To'siqlar)", "Organization (Tashkilot)"], answer: 0 },
+                { q: "Kompaniyaning barcha daromadlaridan harajatlar chegirilgandan keyin qolgan mablag':", options: ["Tushum", "Sof foyda", "Ustav kapitali"], answer: 1 },
+                { q: "B2C modeli qanday tarjima qilinadi?", options: ["Biznesdan mijozga", "Biznesdan davlatga", "Mijozdan biznesga"], answer: 0 },
+                { q: "Franchayzing nima?", options: ["Tayyor brend va biznes modelidan foydalanish huquqi", "Soliqlardan qochish usuli", "Kompaniyani bankrot qilish"], answer: 0 },
+                { q: "Aktivlar nimadan iborat?", options: ["Kompaniyaga daromad keltiruvchi resurslar", "Faqat kompaniya qarzlaridan", "Xodimlarning maolalaridan"], answer: 0 },
+                { q: "KPI qanday ma'noni anglatadi?", options: ["Key Performance Indicator", "Key Product Integration", "Knowledge Process Index"], answer: 0 }
+            ]
+        }
+    };
+
+    let activeQuestions = [];
+    let currentCategory = null;
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let canAnswer = true;
+
+    // Massivni tasodifiy aralashtirish (Fisher-Yates Shuffle)
+    function shuffleArray(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function showCategories() {
+        document.getElementById('screen-categories').classList.remove('hidden');
+        document.getElementById('screen-quiz').classList.add('hidden');
+        document.getElementById('screen-result').classList.add('hidden');
+    }
+
+    function startQuiz(categoryKey) {
+        currentCategory = quizData[categoryKey];
+        currentQuestionIndex = 0;
+        score = 0;
+
+        // Savollarni tasodifiy aralashtirib olish
+        activeQuestions = shuffleArray(currentCategory.questions);
+
+        document.getElementById('quiz-category-title').innerText = currentCategory.title;
+        document.getElementById('screen-categories').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.remove('hidden');
+
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        canAnswer = true;
+        const qData = activeQuestions[currentQuestionIndex];
+        const total = activeQuestions.length;
+
+        document.getElementById('question-counter').innerText = `${currentQuestionIndex + 1} / ${total}`;
+        document.getElementById('progress-bar').style.width = `${((currentQuestionIndex) / total) * 100}%`;
+        document.getElementById('question-text').innerText = qData.q;
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        // Javob variantlarini tayyorlash va ularni ham tasodifiy aralashtirish
+        const optionsObjects = qData.options.map((opt, idx) => ({
+            text: opt,
+            isCorrect: idx === qData.answer
+        }));
+        
+        const shuffledOptions = shuffleArray(optionsObjects);
+
+        shuffledOptions.forEach((optObj) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = optObj.text;
+            btn.onclick = () => selectOption(optObj.isCorrect, btn);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(isCorrect, btnEl) {
+        if (!canAnswer) return;
+        canAnswer = false;
+
+        const allButtons = document.querySelectorAll('.option-btn');
+
+        if (isCorrect) {
+            btnEl.classList.add('correct');
+            score++;
+        } else {
+            btnEl.classList.add('wrong');
+            // Tog'ri javobni ko'rsatish
+            allButtons.forEach(btn => {
+                // To'g'ri elementni belgilash
+            });
+        }
+
+        setTimeout(() => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < activeQuestions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }, 1200);
+    }
+
+    function showResult() {
+        document.getElementById('screen-quiz').classList.add('hidden');
+        document.getElementById('screen-result').classList.remove('hidden');
+
+        const total = activeQuestions.length;
+        document.getElementById('score-display').innerText = `${score}/${total}`;
+
+        const percentage = (score / total) * 100;
+        let title = "Ajoyib natija!";
+        let desc = "Siz barcha yo'nalishlarni mukammal egallamoqdasiz.";
+
+        if (percentage < 50) {
+            title = "Yana ozroq harakat qiling!";
+            desc = "Mavzuni qayta ko'rib chiqishni maslahat beramiz.";
+        }
+
+        document.getElementById('result-title').innerText = title;
+        document.getElementById('result-desc').innerText = desc;
+    }
+</script>
+</body>
+</html>
